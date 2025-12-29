@@ -79,6 +79,18 @@ func deriveEqualPurchasedProduct(this, that *MembershipV2PurchasedProduct) bool 
 			deriveEqual_5(this.ProductStatus, that.ProductStatus)
 }
 
+// deriveEqualIdentityProfile returns whether this and that are equal.
+func deriveEqualIdentityProfile(this, that *IdentityProfile) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Identity == that.Identity &&
+			this.Name == that.Name &&
+			this.IconCid == that.IconCid &&
+			deriveEqual_6(this.IconEncryptionKeys, that.IconEncryptionKeys) &&
+			this.Description == that.Description &&
+			this.GlobalName == that.GlobalName
+}
+
 // deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that []string) bool {
 	if this == nil || that == nil {
@@ -104,7 +116,7 @@ func deriveEqual_(this, that []*MembershipV2Amount) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_6(this[i], that[i])) {
+		if !(deriveEqual_7(this[i], that[i])) {
 			return false
 		}
 	}
@@ -146,7 +158,7 @@ func deriveEqual_3(this, that *MembershipV2Invoice) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Date == that.Date &&
-			deriveEqual_6(this.Total, that.Total)
+			deriveEqual_7(this.Total, that.Total)
 }
 
 // deriveEqual_4 returns whether this and that are equal.
@@ -167,9 +179,33 @@ func deriveEqual_5(this, that *MembershipV2ProductStatus) bool {
 }
 
 // deriveEqual_6 returns whether this and that are equal.
-func deriveEqual_6(this, that *MembershipV2Amount) bool {
+func deriveEqual_6(this, that []*FileEncryptionKey) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqual_8(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_7 returns whether this and that are equal.
+func deriveEqual_7(this, that *MembershipV2Amount) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Currency == that.Currency &&
 			this.AmountCents == that.AmountCents
+}
+
+// deriveEqual_8 returns whether this and that are equal.
+func deriveEqual_8(this, that *FileEncryptionKey) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Path == that.Path &&
+			this.Key == that.Key
 }
